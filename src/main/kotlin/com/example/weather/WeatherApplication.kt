@@ -1,5 +1,6 @@
 package com.example.weather
 
+import com.example.weather.model.City
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -8,4 +9,5 @@ class WeatherApplication
 
 fun main(args: Array<String>) {
     runApplication<WeatherApplication>(*args)
+
 }
