@@ -1,7 +1,7 @@
 package com.example.weather.model
 
-data class WeatherData (
+data class WeatherData(
         val temperature: Float,
-        val dt: Long,
+        val timestamp: Long,
         val formattedDate: String
 )
