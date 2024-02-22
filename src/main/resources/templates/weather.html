@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+</head>
+<body>
+<h1>Weather Forecast</h1>
+
+<form action="#" th:action="@{/weather}" th:object="${forecastForm}" method="get">
+    <label for="city">Select City:</label>
+    <select name="city" id="city" th:field="*{city}">
+        <option value="CESKE_BUDEJOVICE">Ceske Budejovice</option>
+        <option value="NEW_YORK">New York</option>
+        <option value="SYDNEY">Sydney</option>
+    </select>
+
+    <label for="day">Enter Day of Forecast (1-16):</label>
+    <input type="number" name="day" id="day" th:field="*{day}" min="1" max="16">
+
+    <input type="submit" value="Get Forecast">
+</form>
+
+<div th:if="${temperatures != null}">
+    <h2>Weather Forecast for <span th:text="${city.cityName}"></span></h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Temperature (°C)</th>
+        </tr>
+        <tr th:each="forecast : ${temperatures}">
+            <td th:text="${#temporals.format(forecast.dt, 'EEE, dd/MM')}"></td>
+            <td th:text="${forecast.temperature}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
