@@ -1,35 +1,82 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Weather Forecast</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Weather Forecast</h1>-->
+
+<!--<form action="#" th:action="@{/weather}" method="get">-->
+<!--    <label for="city">Select City:</label>-->
+<!--    <select name="city" id="city">-->
+<!--        <option value="CESKE_BUDEJOVICE">České Budějovice</option>-->
+<!--        <option value="NEW_YORK">New York</option>-->
+<!--        <option value="SYDNEY">Sydney</option>-->
+<!--    </select>-->
+
+<!--    <label for="day">Enter Day of Forecast (1-16):</label>-->
+<!--    <input type="number" name="day" id="day" min="1" max="16">-->
+
+<!--    <input type="submit" value="Get Forecast">-->
+<!--</form>-->
+
+<!--<div th:if="${temperatures != null}">-->
+<!--    <h2>Weather Forecast for <span th:text="${city}"></span></h2>-->
+<!--    <ul>-->
+<!--        <li th:each="forecast : ${temperatures}">-->
+<!--            <span th:text="${#temporals.format(forecast.dt * 1000, 'EEE dd/MM')}"></span> - -->
+<!--            <span th:text="${'Temperature: ' + forecast.temperature + '°C'}"></span>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Forecast</title>
 </head>
 <body>
 <h1>Weather Forecast</h1>
 
-<form action="#" th:action="@{/weather}" method="get">
+<form action="#" th:action="@{/weather}" th:object="${weatherForm}" method="get">
     <label for="city">Select City:</label>
-    <select name="city" id="city">
+    <select id="city" name="city">
         <option value="CESKE_BUDEJOVICE">České Budějovice</option>
         <option value="NEW_YORK">New York</option>
         <option value="SYDNEY">Sydney</option>
     </select>
 
-    <label for="day">Enter Day of Forecast (1-16):</label>
-    <input type="number" name="day" id="day" min="1" max="16">
+    <label for="day">Enter Forecast Day (1-16):</label>
+    <input type="number" id="day" name="day" min="1" max="16" required>
 
-    <input type="submit" value="Get Forecast">
+    <button type="submit">Get Forecast</button>
 </form>
 
-<div th:if="${temperatures != null}">
-    <h2>Weather Forecast for <span th:text="${city}"></span></h2>
-    <ul>
-        <li th:each="forecast : ${temperatures}">
-            <span th:text="${#temporals.format(forecast.dt * 1000, 'EEE dd/MM')}"></span> -
-            <span th:text="${'Temperature: ' + forecast.temperature + '°C'}"></span>
-        </li>
-    </ul>
-</div>
+<h2>Today's Forecast</h2>
+<p th:text="'Temperature: ' + ${temperatures[0].temperature} + '°C'"></p>
+
+<h2>Next Day Forecasts</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Temperature</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="forecast : ${temperatures}" th:unless="${#lists.isEmpty(temperatures)}">
+        <td th:text="${forecast.formattedDate}"></td>
+        <td th:text="${forecast.temperature} + '°C'"></td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(temperatures)}">
+        <td colspan="2">No forecasts available</td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
+
